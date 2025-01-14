@@ -15,79 +15,83 @@ class Movie:
         print(f"Tytuł: {self.title}")
         print(f"Czas trwania: {self.duration} minut")
         print("Godziny seansów: ", ", ".join(self.showtimes))
-        
-        class Customer:
-            def __init__(self, first_name, last_name):
-                self.first_name = first_name
-                self.last_name = last_name
-                self.rezerwacje = []
 
-            def add_reservation(self, movie, time):
-                if time in movie.showtimes:
-                    self.rezerwacje.append((movie.title, time))
-                else:
-                    print(f"Seans o godzinie {time} nie jest dostępny dla filmu {movie.title}")
+class Customer:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.rezerwacje = []
 
-            def display_reservations(self):
-                print(f"Rezerwacje dla {self.first_name} {self.last_name}:")
-                for rezerwacja in self.rezerwacje:
-                    print(f"Film: {rezerwacja[0]}, Godzina seansu: {rezerwacja[1]}")
+    def add_reservation(self, movie, time):
+        if time in movie.showtimes:
+            self.rezerwacje.append((movie.title, time))
+        else:
+            print(f"Seans o godzinie {time} nie jest dostępny dla filmu {movie.title}")
 
-        class VIPCustomer(Customer):
-            def get_discounted_price(self, price):
-                return price * 0.8
+    def display_reservations(self):
+        print(f"Rezerwacje dla {self.first_name} {self.last_name}:")
+        for rezerwacja in self.rezerwacje:
+            print(f"Film: {rezerwacja[0]}, Godzina seansu: {rezerwacja[1]}")
 
-            def book_private_show(self, movie, time):
-                if time in movie.showtimes:
-                    print(f"Prywatny seans zarezerwowany dla {self.first_name} {self.last_name} na film {movie.title} o godzinie {time}")
-                else:
-                    print(f"Seans o godzinie {time} nie jest dostępny dla filmu {movie.title}")
+class VIPCustomer(Customer):
+    def get_discounted_price(self, price):
+        return price * 0.8
 
-        class Cinema:
-            def __init__(self):
-                self.movies = []
-                self.customers = []
+    def book_private_show(self, movie, time):
+        if time in movie.showtimes:
+            print(f"Prywatny seans zarezerwowany dla {self.first_name} {self.last_name} na film {movie.title} o godzinie {time}")
+        else:
+            print(f"Seans o godzinie {time} nie jest dostępny dla filmu {movie.title}")
 
-            def add_movie(self, movie):
-                self.movies.append(movie)
+class Cinema:
+    def __init__(self):
+        self.movies = []
+        self.customers = []
 
-            def add_customer(self, customer):
-                self.customers.append(customer)
+    def add_movie(self, movie):
+        self.movies.append(movie)
 
-            def display_movies(self):
-                print("Filmy w kinie:")
-                for movie in self.movies:
-                    movie.wyswietl_szczegoly()
+    def add_customer(self, customer):
+        self.customers.append(customer)
 
-        def main():
-            # Create movies
-            movie1 = Movie("Incepcja", 148, ["14:00", "18:00", "21:00"])
-            movie2 = Movie("Interstellar", 169, ["12:00", "16:00", "20:00"])
+    def display_movies(self):
+        print("Filmy w kinie:")
+        for movie in self.movies:
+            movie.wyswietl_szczegoly()
 
-            # Create customers
-            customer1 = Customer("Jan", "Kowalski")
-            vip_customer = VIPCustomer("Anna", "Nowak")
+def main():
+    # Create movies
+    movie1 = Movie("Incepcja", 148, ["14:00", "18:00", "21:00"])
+    movie2 = Movie("Interstellar", 169, ["12:00", "16:00", "20:00"])
 
-            # Create cinema
-            cinema = Cinema()
-            cinema.add_movie(movie1)
-            cinema.add_movie(movie2)
-            cinema.add_customer(customer1)
-            cinema.add_customer(vip_customer)
+    # Create customers
+    customer1 = Customer("Jan", "Kowalski")
+    vip_customer = VIPCustomer("Anna", "Nowak")
 
-            # Display movies
-            cinema.display_movies()
+    # Create cinema
+    cinema = Cinema()
+    cinema.add_movie(movie1)
+    cinema.add_movie(movie2)
+    cinema.add_customer(customer1)
+    cinema.add_customer(vip_customer)
 
-            # Add reservations
-            customer1.add_reservation(movie1, "14:00")
-            vip_customer.add_reservation(movie2, "20:00")
+    # Display movies
+    print("Dostępne filmy w repertuarze kina:")
+    cinema.display_movies()
 
-            # Display reservations
-            customer1.display_reservations()
-            vip_customer.display_reservations()
+    # Add reservations
+    print("\nRezerwacja biletu przez klienta:")
+    customer1.add_reservation(movie1, "14:00")
+    vip_customer.add_reservation(movie2, "20:00")
 
-            # VIP customer books a private show
-            vip_customer.book_private_show(movie1, "18:00")
+    # Display reservations
+    print("\nSzczegóły rezerwacji klientów:")
+    customer1.display_reservations()
+    vip_customer.display_reservations()
 
-        if __name__ == "__main__":
-            main()
+    # VIP customer books a private show
+    print("\nRezerwacja prywatnego seansu przez klienta VIP:")
+    vip_customer.book_private_show(movie1, "18:00")
+
+if __name__ == "__main__":
+    main()
